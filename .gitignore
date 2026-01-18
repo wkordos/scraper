@@ -1,0 +1,83 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.env/
+.env*/
+.venv/
+
+# =========================
+# Scrapy
+# =========================
+*.egg-info/
+.eggs/
+.scrapy/
+*.log
+
+# Crawl state / local state
+state_*.json
+
+# =========================
+# Data / scraping output
+# =========================
+data/
+downloads/
+output/
+
+# =========================
+# Jupyter / IPython
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# VS Code
+# =========================
+.vscode/
+!.vscode/settings.json
+!.vscode/launch.json
+
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# =========================
+# Windows
+# =========================
+$RECYCLE.BIN/
+*.lnk
+
+# =========================
+# Tests / Coverage
+# =========================
+.pytest_cache/
+.coverage
+htmlcov/
+
+# =========================
+# Build / Distribution
+# =========================
+build/
+dist/
+
+# =========================
+# SQLite databases
+# =========================
+*.sqlite
+*.sqlite3
+*.db
+
+# =========================
+# Secrets
+# =========================
+*.env
+.env.local
+.env.production
