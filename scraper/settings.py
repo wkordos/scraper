@@ -23,9 +23,9 @@ ADDONS = {}
 ROBOTSTXT_OBEY = True
 
 # Concurrency and throttling settings
-#CONCURRENT_REQUESTS = 16
+CONCURRENT_REQUESTS = 1
 CONCURRENT_REQUESTS_PER_DOMAIN = 1
-DOWNLOAD_DELAY = 1
+DOWNLOAD_DELAY = 2
 
 # Disable cookies (enabled by default)
 #COOKIES_ENABLED = False
@@ -41,9 +41,10 @@ DOWNLOAD_DELAY = 1
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
-#    "scraper.middlewares.ScraperSpiderMiddleware": 543,
-#}
+SPIDER_MIDDLEWARES = {
+    "scrapy_deltafetch.DeltaFetch": 100,
+    #"scraper.middlewares.ScraperSpiderMiddleware": 543,
+}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
@@ -59,9 +60,10 @@ DOWNLOAD_DELAY = 1
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "scraper.pipelines.ScraperPipeline": 300,
-#}
+ITEM_PIPELINES = {
+    "scraper.pipelines.save_html_pipeline.SaveHtmlPipeline": 300,
+    "scraper.pipelines.save_meta_pipeline.SaveMetaPipeline": 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -87,9 +89,6 @@ DOWNLOAD_DELAY = 1
 # Set settings whose default value is deprecated to a future-proof value
 FEED_EXPORT_ENCODING = "utf-8"
 
-
-
-
 # Katalog główny projektu (tam gdzie scrapy.cfg)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -103,6 +102,16 @@ DATA_EXPORT_DIR = DATA_DIR / "exports"
 
 # Upewnij się, że katalog istnieje
 DATA_DIR.mkdir(parents=True, exist_ok=True)
-DATA_HTML_DIR.mkdir(parents=True, exist_ok=True)
+#DATA_HTML_DIR.mkdir(parents=True, exist_ok=True)
 DATA_DB_DIR.mkdir(parents=True, exist_ok=True)
 DATA_EXPORT_DIR.mkdir(parents=True, exist_ok=True)
+
+
+# DeltaFetch settings
+DELTAFETCH_ENABLED = True
+DELTAFETCH_DIR = DATA_DB_DIR
+
+
+LOG_FILE = BASE_DIR / "logs/scrapy.log"
+LOG_LEVEL = "INFO"
+LOG_STDOUT = True
