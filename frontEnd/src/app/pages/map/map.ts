@@ -16,10 +16,23 @@ export class Map implements AfterViewInit, OnDestroy {
       zoom: 12,
     });
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors',
-    }).addTo(this.map);
+
+
+    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 });
+    osm.addTo(this.map);
+
+    const kiegUrl = 'https://integracja.gugik.gov.pl/cgi-bin/KrajowaIntegracjaEwidencjiGruntow?language=pol&';
+    const dzialki = L.tileLayer.wms(kiegUrl, {
+      layers: 'dzialki',
+      format: 'image/png',
+      transparent: true,
+      version: '1.3.0',
+    });
+
+    dzialki.addTo(this.map);
+
+    // (opcjonalnie) kontrolka warstw
+    L.control.layers({ OSM: osm }, { 'Działki (WMS)': dzialki }).addTo(this.map);
   }
 
   ngOnDestroy(): void {
