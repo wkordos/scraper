@@ -2,7 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { TopMenuComponent  } from './layout/top-menu/top-menu';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
