@@ -5,7 +5,16 @@
     </div>
 
     <ul class="flex gap-6 text-sm font-medium">
-      <li><a class="hover:text-slate-300" href="#">Strona główna</a></li>
+      <li>
+        <a class="hover:text-slate-200" routerLink="/" routerLinkActive="text-slate-200 underline" [routerLinkActiveOptions]="{ exact: true }">
+          Start
+        </a>
+      </li>
+      <li>
+        <a class="hover:text-slate-200" routerLink="/mapa" routerLinkActive="text-slate-200 underline">
+          Mapa
+        </a>
+      </li>
       <li><a class="hover:text-slate-300" href="#">Aukcje</a></li>
       <li><a class="hover:text-slate-300" href="#">Kontakt</a></li>
     </ul>

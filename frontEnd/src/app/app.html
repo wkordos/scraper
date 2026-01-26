@@ -1,13 +1,15 @@
-<div class="h-screen flex flex-col bg-slate-200">
+<div class="h-screen flex flex-col bg-slate-200 ">
   <!-- TOP MENU -->
-  <app-top-menu></app-top-menu>
+  <app-top-menu class="shrink-0"></app-top-menu>
 
   <!-- PAGE CONTENT (wrapper full width) -->
   <main class="flex-1 bg-slate-200">
     <!-- CONTENT CONTAINER (same width as menu text) -->
-    <div class="mx-auto max-w-5xl bg-white px-6 py-8 shadow-sm flex h-full max-w-6xl flex-col" >
+    <div class="mx-auto bg-white px-1 py-1 shadow-sm flex  max-w-6xl flex-col " >
       <!-- TU IDZIE ZAWARTOŚĆ STRONY -->
-      <router-outlet></router-outlet>
+      <div class="flex-1 relative overflow-hidden">
+  <router-outlet></router-outlet>
+</div>
     </div>
   </main>
 </div>
