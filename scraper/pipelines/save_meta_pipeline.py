@@ -14,7 +14,7 @@ class SaveMetaPipeline:
         if not isinstance(item, AuctionItem):
             return item
         
-        spider.logger.info("SaveHtmlPipeline: przetwarzanie item ID=%s", item.get("auction_id"))
+        spider.logger.info("SaveJsonPipeline: przetwarzanie item ID=%s", item.get("auction_id"))
         
         auction_id = item["auction_id"]
         

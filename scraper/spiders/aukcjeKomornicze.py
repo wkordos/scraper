@@ -47,17 +47,19 @@ class AukcjeKomorniczeSpider(scrapy.Spider):
     def parse_list(self, response):
         # zbierz linki do szczegółów aukcji
         detail_links = response.css(
-            'a[href^="/Notice/Details/"]::attr(href)'
-        ).getall()
+            'a[href^="/Notice/Details/"]'
+        )
 
-        for href in detail_links:
+        for a in detail_links:
+            href = a.attrib["href"]
             match = self.details_regex.match(href)
             if not match:
                 continue
 
+            row = a.xpath('ancestor::tr[1]')
+            location = row.xpath('normalize-space(td[5])').get().strip()
+
             auction_id = int(match.group(1))
-
-
             url = response.urljoin(href)
 
             self.logger.debug("Tworzenie requestu dla aukcji url=%s", url)
@@ -68,6 +70,7 @@ class AukcjeKomorniczeSpider(scrapy.Spider):
                 meta={
                     "auction_id": auction_id,
                     "category_id": self.category_id,
+                    "location": location,
                     "deltafetch_key": str(auction_id),
                 },
                 dont_filter=True,
@@ -88,6 +91,7 @@ class AukcjeKomorniczeSpider(scrapy.Spider):
     def parse_detail(self, response):
 
         auction_id = int(response.meta["auction_id"])
+        location = response.meta["location"]
         self.logger.info("Przetwarzanie aukcji ID=%s", auction_id)
 
         item = AuctionItem()
@@ -98,6 +102,8 @@ class AukcjeKomorniczeSpider(scrapy.Spider):
 
         
         metadata = {}
+
+        metadata["Lokalizacja"] = location
 
         rows = response.css("div#main-content div.row")
         for row in rows:

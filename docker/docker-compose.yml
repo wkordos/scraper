@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  postgis:
+    image: postgis/postgis:latest
+    container_name: postgis
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: gis
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - C:\Users\Admin\Documents\projekt\scraper\data\postgis\data:/var/lib/postgresql/data
+  pgadmin:
+      image: dpage/pgadmin4:latest
+      container_name: pgadmin
+      restart: unless-stopped
+      environment:
+        PGADMIN_DEFAULT_EMAIL: admin@admin.com
+        PGADMIN_DEFAULT_PASSWORD: admin
+      ports:
+        - "5050:80"
+      volumes:
+        - C:\Users\Admin\Documents\projekt\scraper\data\postgis\pgadmin:/var/lib/pgadmin
+      depends_on:
+        - postgis
