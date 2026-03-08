@@ -1,4 +1,4 @@
-version: "3.9"
+
 
 services:
   postgis:
@@ -26,3 +26,17 @@ services:
         - C:\Users\Admin\Documents\projekt\scraper\data\postgis\pgadmin:/var/lib/pgadmin
       depends_on:
         - postgis
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"     # AMQP
+      - "15672:15672"   # Web UI
+    volumes:
+      - "C:/Users/Admin/Documents/projekt/scraper/data/rabbitmq:/var/lib/rabbitmq"
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    restart: unless-stopped

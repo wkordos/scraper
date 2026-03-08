@@ -5,8 +5,11 @@ from scraper.items import AuctionItem
 
 class AukcjeKomorniczeSpider(scrapy.Spider):
     name = "aukcjeKomornicze"
-    allowed_domains = ["licytacje.komornik.pl"]
-    start_url = "https://licytacje.komornik.pl/Notice/Filter/"
+    allowed_domains = ["licytacje.komornik.pl", "ool.komornik.pl"]
+    #start_url = "https://licytacje.komornik.pl/Notice/Filter/"
+    start_url = "https://ool.komornik.pl/Notice/Filter/"
+
+    
 
 
 
@@ -58,6 +61,10 @@ class AukcjeKomorniczeSpider(scrapy.Spider):
 
             row = a.xpath('ancestor::tr[1]')
             location = row.xpath('normalize-space(td[5])').get().strip()
+            daty_aukcji = re.findall(r"\d{2}-\d{2}-\d{4}", row.xpath('normalize-space(td[3])').get().strip())
+
+            start_aukcji = daty_aukcji[0] if len(daty_aukcji) > 0 else None
+            koniec_aukcji = daty_aukcji[1] if len(daty_aukcji) > 1 else None
 
             auction_id = int(match.group(1))
             url = response.urljoin(href)
@@ -72,6 +79,8 @@ class AukcjeKomorniczeSpider(scrapy.Spider):
                     "category_id": self.category_id,
                     "location": location,
                     "deltafetch_key": str(auction_id),
+                    "start_aukcji": start_aukcji,
+                    "koniec_aukcji": koniec_aukcji
                 },
                 dont_filter=True,
             )
@@ -92,6 +101,8 @@ class AukcjeKomorniczeSpider(scrapy.Spider):
 
         auction_id = int(response.meta["auction_id"])
         location = response.meta["location"]
+        start_aukcji = response.meta["start_aukcji"]
+        koniec_aukcji = response.meta["koniec_aukcji"]
         self.logger.info("Przetwarzanie aukcji ID=%s", auction_id)
 
         item = AuctionItem()
@@ -104,6 +115,8 @@ class AukcjeKomorniczeSpider(scrapy.Spider):
         metadata = {}
 
         metadata["Lokalizacja"] = location
+        metadata["start_aukcji"] = start_aukcji
+        metadata["koniec_aukcji"] = koniec_aukcji
 
         rows = response.css("div#main-content div.row")
         for row in rows:

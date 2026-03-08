@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 # Scrapy settings for scraper project
 #
@@ -65,6 +66,7 @@ SPIDER_MIDDLEWARES = {
 ITEM_PIPELINES = {
     "scraper.pipelines.save_html_pipeline.SaveHtmlPipeline": 300,
     "scraper.pipelines.save_meta_pipeline.SaveMetaPipeline": 300,
+    "scraper.pipelines.send_to_middleware_pipeline.SendToMiddlewarePipeline": 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -117,3 +119,18 @@ DELTAFETCH_DIR = DATA_DB_DIR
 LOG_FILE = BASE_DIR / "logs/scrapy.log"
 LOG_LEVEL = "INFO"
 LOG_STDOUT = True
+
+
+
+
+# RabbitMQ settings
+RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "localhost")
+RABBITMQ_PORT = int(os.getenv("RABBITMQ_PORT", "5672"))
+RABBITMQ_USER = os.getenv("RABBITMQ_USER", "scraper")
+RABBITMQ_PASS = os.getenv("RABBITMQ_PASS", "scraper")
+RABBITMQ_VHOST = os.getenv("RABBITMQ_VHOST", "/")
+
+RABBITMQ_BROKER_URL = (
+    f"amqp://{RABBITMQ_USER}:{RABBITMQ_PASS}"
+    f"@{RABBITMQ_HOST}:{RABBITMQ_PORT}/{RABBITMQ_VHOST.lstrip('/')}"
+)
