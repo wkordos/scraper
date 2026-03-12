@@ -40,3 +40,49 @@ services:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: admin
     restart: unless-stopped
+
+  scraper:
+    container_name: scraper
+    build:
+      context: ..
+      dockerfile: docker/dockerfiles/scraper.dockerfile
+    environment:
+      RABBITMQ_HOST: rabbitmq
+    volumes:
+      - ../data:/app/data
+      - ../logs:/app/logs
+    stdin_open: true
+    tty: true
+    depends_on:
+      - rabbitmq
+
+  processor:
+    container_name: processor
+    build:
+      context: ..
+      dockerfile: docker/dockerfiles/processor.dockerfile
+    environment:
+      RABBITMQ_HOST: rabbitmq
+    volumes:
+      - ../logs:/app/logs
+    stdin_open: true
+    tty: true
+    depends_on:
+      - rabbitmq
+
+  backend:
+      container_name: backend
+      build:
+        context: ..
+        dockerfile: docker/dockerfiles/backend.dockerfile
+      ports:
+        - "5000:5000"
+      volumes:
+        - ../backend:/app/backend
+        - ../frontEnd/dist/frontEnd/browser:/app/frontEnd/dist/frontEnd/browser
+      environment:
+        DATABASE_URL: postgresql://postgres:postgres@postgis:5432/gis
+      stdin_open: true
+      tty: true
+      depends_on:
+        - postgis
